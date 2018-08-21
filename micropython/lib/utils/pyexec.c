@@ -421,7 +421,6 @@ friendly_repl_reset:
 
         vstr_reset(&line);
         int ret = readline(&line, ">>> ");
-        mp_hal_stdout_tx_str("READLINE\r\n");
         mp_parse_input_kind_t parse_input_kind = MP_PARSE_SINGLE_INPUT;
 
         if (ret == CHAR_CTRL_A) {

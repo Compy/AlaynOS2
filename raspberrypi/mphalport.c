@@ -13,17 +13,19 @@
 #ifdef MICROPY_HW_USBHOST
 #include "usbkbd.h"
 #endif
-
+#define printf(...) mp_printf(&mp_plat_print, __VA_ARGS__)
 // Time and delay
 
 void mp_hal_delay_ms(mp_uint_t ms) {
+    /*
     uint64_t end_time;
     end_time = systime() + ms * 1000;
     while(systime() < end_time) {
         extern void mp_handle_pending(void);
         mp_handle_pending();
     }
-  
+    */
+    wait_msec(ms);
     return;
 }
 

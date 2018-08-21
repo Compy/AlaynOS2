@@ -110,3 +110,25 @@ void rpi_init() {
 // any initialization 
 }
 
+/**
+ * Wait N CPU cycles (ARM CPU only)
+ */
+void wait_cycles(unsigned int n)
+{
+    if(n) while(n--) { __asm__ volatile("nop"); }
+}
+
+/**
+ * Wait N microsec (ARM CPU only)
+ */
+void wait_msec(unsigned int n)
+{
+    register unsigned long f, t, r;
+    // get the current counter frequency
+    __asm__ volatile ("mrs %0, cntfrq_el0" : "=r"(f));
+    // read the current counter
+    __asm__ volatile ("mrs %0, cntpct_el0" : "=r"(t));
+    // calculate expire value for counter
+    t+=((f/1000)*n)/1000;
+    do{__asm__ volatile ("mrs %0, cntpct_el0" : "=r"(r));}while(r<t);
+}
